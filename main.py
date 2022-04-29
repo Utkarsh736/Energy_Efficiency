@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from typing import Optional
+import uvicorn
 import joblib
 
 app = FastAPI()
@@ -21,25 +22,27 @@ class Energy_inputs(BaseModel):
 def home():
     return{'Energy':'Efficiency'}
 
-
 @app.post('/predict')
-def predict_load(input: Energy_inputs):
+def predict_load(predict_data: Energy_inputs):
 
-    data = input.dict()
-    data_input = [data['relative_compactness'],
+    data = predict_data.dict()
+    data_input = [[data['relative_compactness'],
                 data['surface_area'],
                 data['well_area'],
                 data['roof_area'],
                 data['overall_height'],
                 data['orientation'],
                 data['glazing_area'],
-                data['glazing_area_distribution']
+                data['glazing_area_distribution']]
                 ]
 
-    filepath = 'energy-efficiency-prediction-v-70\energy_efficiency_prediction'
+    filepath = "C:/Users/utkar/Energy_Efficiency/energy_efficiency_prediction.joblib"
     loaded_model = joblib.load('energy_efficiency_prediction.joblib')
     prediction = loaded_model.predict(data_input)
     return{
-        'prediction':prediction[0],
-        'accuracy': prediction[1]
+        'Hot Load':prediction[0][0],
+        'Cold Load': prediction[0][1]
             }
+
+if __name__ == '__main__':
+    uvicorn.run(app)
