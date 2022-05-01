@@ -12,4 +12,5 @@ The effect of eight input variables (relative compactness, surface area, wall ar
 ## Authors
 
 - [@Utkarsh736](https://www.github.com/utkarsh736)
+- [@vishnuarun02](https://github.com/vishnuarun02)
 
